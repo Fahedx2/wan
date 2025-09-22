@@ -1,0 +1,158 @@
+<svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with subtle gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#F6F3EE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E9EEF2;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Breathing animation for logo -->
+    <animate id="breathe" attributeName="r" values="35;42;35" dur="6s" repeatCount="indefinite"/>
+
+    <!-- Soft glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Main background -->
+  <rect width="1080" height="1920" fill="url(#bgGradient)"/>
+
+  <!-- Subtle wave patterns for mind/consciousness theme -->
+  <path d="M0 200 Q270 150 540 200 T1080 200" stroke="#2AB3A6" stroke-width="2" fill="none" opacity="0.2"/>
+  <path d="M0 250 Q270 200 540 250 T1080 250" stroke="#2AB3A6" stroke-width="2" fill="none" opacity="0.15"/>
+  <path d="M0 300 Q270 250 540 300 T1080 300" stroke="#2AB3A6" stroke-width="2" fill="none" opacity="0.1"/>
+
+  <!-- Card 1: Neural Regulation + Intention -->
+  <g id="card1">
+    <!-- Logo with breathing animation -->
+    <circle cx="540" cy="320" r="35" fill="#2AB3A6" opacity="0.3">
+      <animate attributeName="r" values="35;42;35" dur="6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="540" cy="320" r="30" fill="none" stroke="#2AB3A6" stroke-width="3"/>
+
+    <!-- Sound waves emanating from center (representing language/listening) -->
+    <circle cx="540" cy="320" r="50" fill="none" stroke="#2AB3A6" stroke-width="2" opacity="0.4">
+      <animate attributeName="r" values="50;65;50" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.4;0.1;0.4" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="540" cy="320" r="70" fill="none" stroke="#2AB3A6" stroke-width="1" opacity="0.3">
+      <animate attributeName="r" values="70;85;70" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0.05;0.3" dur="5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Breathing instruction -->
+    <text x="540" y="420" font-family="Cairo, Noto Sans Arabic" font-size="40" fill="#0F2537" text-anchor="middle" font-weight="500">
+      ضع يدك على صدرك واستمع لنبضك
+    </text>
+    <text x="540" y="470" font-family="Cairo, Noto Sans Arabic" font-size="36" fill="#2AB3A6" text-anchor="middle">
+      💛 تنفّس واشعر بالهدوء الداخلي
+    </text>
+
+    <!-- Intention -->
+    <text x="540" y="550" font-family="Cairo, Noto Sans Arabic" font-size="38" fill="#0F2537" text-anchor="middle" font-weight="400">
+      نويت أن أشكر الله على نعم الفهم والتواصل
+    </text>
+  </g>
+
+  <!-- Card 2: 3 Scenic Blessings -->
+  <g id="card2">
+    <!-- Title -->
+    <text x="540" y="680" font-family="Cairo, Noto Sans Arabic" font-size="58" fill="#0F2537" text-anchor="middle" font-weight="600">
+      نِعَم اللغة والفهم
+    </text>
+    <text x="540" y="740" font-family="Cairo, Noto Sans Arabic" font-size="42" fill="#2AB3A6" text-anchor="middle">
+      اليوم الحادي عشر
+    </text>
+
+    <!-- Blessing 1: Language -->
+    <rect x="120" y="800" width="840" height="140" rx="24" fill="#FFFFFF" opacity="0.8"/>
+    <text x="900" y="850" font-family="Cairo, Noto Sans Arabic" font-size="48" fill="#D4A373" text-anchor="end" font-weight="600">١</text>
+    <text x="860" y="850" font-family="Cairo, Noto Sans Arabic" font-size="40" fill="#0F2537" text-anchor="end">
+      نعمة اللغة 🗣️
+    </text>
+    <text x="860" y="900" font-family="Cairo, Noto Sans Arabic" font-size="36" fill="#2E2E2E" text-anchor="end">
+      الآن أحوّل أفكاري إلى كلمات يفهمها الآخرون
+    </text>
+    <text x="860" y="935" font-family="Cairo, Noto Sans Arabic" font-size="32" fill="#2AB3A6" text-anchor="end" opacity="0.9">
+      رُبَّ ابتلاء بالصمت القسري صُرف عني
+    </text>
+
+    <!-- Blessing 2: Listening -->
+    <rect x="120" y="970" width="840" height="140" rx="24" fill="#FFFFFF" opacity="0.8"/>
+    <text x="900" y="1020" font-family="Cairo, Noto Sans Arabic" font-size="48" fill="#D4A373" text-anchor="end" font-weight="600">٢</text>
+    <text x="860" y="1020" font-family="Cairo, Noto Sans Arabic" font-size="40" fill="#0F2537" text-anchor="end">
+      نعمة الإصغاء 👂
+    </text>
+    <text x="860" y="1070" font-family="Cairo, Noto Sans Arabic" font-size="36" fill="#2E2E2E" text-anchor="end">
+      أذناي تلتقطان الأصوات وقلبي يستوعب المعاني
+    </text>
+    <text x="860" y="1105" font-family="Cairo, Noto Sans Arabic" font-size="32" fill="#2AB3A6" text-anchor="end" opacity="0.9">
+      كل همسة حنان تصلني هي رحمة من الله
+    </text>
+
+    <!-- Blessing 3: Understanding -->
+    <rect x="120" y="1140" width="840" height="140" rx="24" fill="#FFFFFF" opacity="0.8"/>
+    <text x="900" y="1190" font-family="Cairo, Noto Sans Arabic" font-size="48" fill="#D4A373" text-anchor="end" font-weight="600">٣</text>
+    <text x="860" y="1190" font-family="Cairo, Noto Sans Arabic" font-size="40" fill="#0F2537" text-anchor="end">
+      نعمة الفهم 💡
+    </text>
+    <text x="860" y="1240" font-family="Cairo, Noto Sans Arabic" font-size="36" fill="#2E2E2E" text-anchor="end">
+      عقلي يربط الكلمات بالمعاني والمعاني بالحكمة
+    </text>
+    <text x="860" y="1275" font-family="Cairo, Noto Sans Arabic" font-size="32" fill="#2AB3A6" text-anchor="end" opacity="0.9">
+      كل لحظة فهم جديد نور يضيء طريقي
+    </text>
+  </g>
+
+  <!-- Card 3: Call to Action -->
+  <g id="card3">
+    <!-- Interactive prompt -->
+    <rect x="120" y="1340" width="840" height="100" rx="24" fill="#2AB3A6" opacity="0.1"/>
+    <text x="540" y="1400" font-family="Cairo, Noto Sans Arabic" font-size="42" fill="#0F2537" text-anchor="middle" font-weight="500">
+      👈 اكتب ٣ نعمك الآن ✨
+    </text>
+
+    <!-- Hashtag -->
+    <text x="540" y="1480" font-family="Cairo, Noto Sans Arabic" font-size="38" fill="#2AB3A6" text-anchor="middle" font-weight="600">
+      #٣_نعم_كل_صباح
+    </text>
+
+    <!-- Closing dhikr -->
+    <rect x="120" y="1540" width="840" height="80" rx="24" fill="#D4A373" opacity="0.1"/>
+    <text x="540" y="1590" font-family="Cairo, Noto Sans Arabic" font-size="40" fill="#0F2537" text-anchor="middle" font-weight="400">
+      الحمد لله على نعمة اللسان والسمع والفؤاد
+    </text>
+
+    <!-- Author signature with user's name -->
+    <text x="540" y="1680" font-family="Cairo, Inter" font-size="28" fill="#2AB3A6" text-anchor="middle" opacity="0.7">
+      تأمل وتصميم: فهد قدومي
+    </text>
+
+    <!-- Project signature -->
+    <text x="540" y="1720" font-family="Cairo, Inter" font-size="22" fill="#0F2537" text-anchor="middle" opacity="0.5">
+      «الموجود أغنى من المفقود»
+    </text>
+  </g>
+
+  <!-- Bottom decorative elements representing sound waves -->
+  <ellipse cx="200" cy="1750" rx="80" ry="20" fill="#2AB3A6" opacity="0.05"/>
+  <ellipse cx="880" cy="1780" rx="60" ry="15" fill="#D4A373" opacity="0.05"/>
+
+  <!-- Subtle corner accents -->
+  <path d="M0 1820 Q50 1820 50 1870 L50 1920 L0 1920 Z" fill="#2AB3A6" opacity="0.1"/>
+  <path d="M1080 1820 Q1030 1820 1030 1870 L1030 1920 L1080 1920 Z" fill="#2AB3A6" opacity="0.1"/>
+
+  <!-- Small decorative speech bubble elements -->
+  <circle cx="150" cy="420" r="8" fill="#2AB3A6" opacity="0.2"/>
+  <circle cx="170" cy="400" r="5" fill="#2AB3A6" opacity="0.15"/>
+  <circle cx="185" cy="385" r="3" fill="#2AB3A6" opacity="0.1"/>
+
+  <circle cx="930" cy="440" r="8" fill="#D4A373" opacity="0.2"/>
+  <circle cx="910" cy="420" r="5" fill="#D4A373" opacity="0.15"/>
+  <circle cx="895" cy="405" r="3" fill="#D4A373" opacity="0.1"/>
+</svg>
