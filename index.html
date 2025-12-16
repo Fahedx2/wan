@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meat & Cheezz | Financial Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .input-sigma { background: #0f172a; border: 1px solid #334155; color: white; transition: all 0.3s; }
+        .input-sigma:focus { border-color: #3b82f6; outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+        .tab-btn.active { border-bottom: 2px solid #3b82f6; color: #3b82f6; background: rgba(59, 130, 246, 0.1); }
+        .danger-glow { box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); border-color: #ef4444; }
+        .success-glow { box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); border-color: #22c55e; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-8 pb-4 border-b border-gray-700">
+        <div>
+            <h1 class="text-3xl font-bold text-white tracking-wider">MEAT <span class="text-blue-500">&</span> CHEEZZ</h1>
+            <p class="text-gray-400 text-sm mt-1">نظام القيادة المالية - Engineer Sigma 4 Edition</p>
+        </div>
+        <div class="text-left hidden md:block">
+            <div class="text-xs text-gray-500 font-mono">SYSTEM STATUS: ONLINE</div>
+            <div class="text-xs text-green-500 font-mono">v4.0.1 STABLE</div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="flex space-x-4 space-x-reverse mb-6 overflow-x-auto pb-2">
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-6 py-2 rounded-t-lg font-bold transition-colors whitespace-nowrap">
+            <i class="fas fa-tachometer-alt ml-2"></i> لوحة القيادة
+        </button>
+        <button onclick="switchTab('costing')" id="btn-costing" class="tab-btn px-6 py-2 rounded-t-lg font-bold transition-colors whitespace-nowrap">
+            <i class="fas fa-calculator ml-2"></i> هندسة المنيو (Costing)
+        </button>
+        <button onclick="switchTab('platforms')" id="btn-platforms" class="tab-btn px-6 py-2 rounded-t-lg font-bold transition-colors whitespace-nowrap">
+            <i class="fas fa-motorcycle ml-2"></i> تحليل المنصات
+        </button>
+        <button onclick="switchTab('pnl')" id="btn-pnl" class="tab-btn px-6 py-2 rounded-t-lg font-bold transition-colors whitespace-nowrap">
+            <i class="fas fa-file-invoice-dollar ml-2"></i> تقرير الأرباح (الفعلي)
+        </button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main-content">
+
+        <!-- 1. DASHBOARD VIEW -->
+        <section id="dashboard" class="space-y-6 animate-fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="glass-panel p-4 rounded-xl border-r-4 border-blue-500">
+                    <h3 class="text-gray-400 text-sm">صافي المبيعات (نوفمبر)</h3>
+                    <div class="text-2xl font-bold mt-1">67,382 <span class="text-xs text-gray-500">د.أ</span></div>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border-r-4 border-green-500">
+                    <h3 class="text-gray-400 text-sm">مجمل الربح (Gross Profit)</h3>
+                    <div class="text-2xl font-bold mt-1">57% <span class="text-xs text-green-400">▲ تحسن</span></div>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border-r-4 border-red-500">
+                    <h3 class="text-gray-400 text-sm">نزيف العمولات (Platforms)</h3>
+                    <div class="text-2xl font-bold mt-1 text-red-400">6,294 <span class="text-xs text-gray-500">د.أ</span></div>
+                    <div class="text-xs text-gray-400 mt-1">أكلت 9% من دخلك الكلي</div>
+                </div>
+                <div class="glass-panel p-4 rounded-xl border-r-4 border-yellow-500">
+                    <h3 class="text-gray-400 text-sm">تنبيه المخزون</h3>
+                    <div class="text-lg font-bold mt-1 text-yellow-400">مطلوب جرد فوري</div>
+                    <div class="text-xs text-gray-400">لإغلاق حسابات ديسمبر بدقة</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Sales Mix Chart -->
+                <div class="glass-panel p-6 rounded-xl">
+                    <h3 class="text-lg font-bold mb-4 border-b border-gray-700 pb-2">توزيع المبيعات (Sales Mix)</h3>
+                    <canvas id="salesChart" height="200"></canvas>
+                </div>
+                <!-- Action Items -->
+                <div class="glass-panel p-6 rounded-xl">
+                    <h3 class="text-lg font-bold mb-4 border-b border-gray-700 pb-2">المهام الحرجة (Sigma Action Plan)</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start space-x-3 space-x-reverse bg-red-900/20 p-3 rounded border border-red-900/50">
+                            <i class="fas fa-exclamation-triangle text-red-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-red-400">إيقاف النزيف في كريم:</span>
+                                <p class="text-sm text-gray-300">العمولة 34.6%. يجب رفع السعر في التطبيق بمقدار 0.75 دينار أو إطلاق حملة استلام من الفرع.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3 space-x-reverse bg-yellow-900/20 p-3 rounded border border-yellow-900/50">
+                            <i class="fas fa-boxes text-yellow-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-yellow-400">جرد المخزون (Physical Count):</span>
+                                <p class="text-sm text-gray-300">يجب تنفيذ جرد 31/12 بدقة 100% لحساب التكلفة الفعلية.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start space-x-3 space-x-reverse bg-blue-900/20 p-3 rounded border border-blue-900/50">
+                            <i class="fas fa-calculator text-blue-500 mt-1"></i>
+                            <div>
+                                <span class="font-bold text-blue-400">استكمال وصفات الـ (Recipes):</span>
+                                <p class="text-sm text-gray-300">أدخل جميع الوصفات في هذا النظام لكشف الهدر.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. RECIPE COSTING -->
+        <section id="costing" class="hidden space-y-6">
+            <div class="glass-panel p-6 rounded-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-blue-400"><i class="fas fa-hamburger ml-2"></i> حاسبة تكلفة الصنف (Recipe Card)</h2>
+                    <button onclick="resetRecipe()" class="text-sm bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded">إعادة تعيين</button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Inputs -->
+                    <div class="md:col-span-2 space-y-4">
+                        <div class="flex gap-4">
+                            <div class="w-2/3">
+                                <label class="block text-xs text-gray-400 mb-1">اسم الصنف</label>
+                                <input type="text" id="recipe-name" value="Double Beef Burger 150g" class="w-full input-sigma p-2 rounded">
+                            </div>
+                            <div class="w-1/3">
+                                <label class="block text-xs text-gray-400 mb-1">سعر البيع (د.أ)</label>
+                                <input type="number" id="recipe-price" value="5.00" step="0.01" oninput="calculateRecipe()" class="w-full input-sigma p-2 rounded font-bold text-blue-300">
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800/50 p-4 rounded-lg">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="text-gray-500 border-b border-gray-700 text-right">
+                                        <th class="pb-2">المكون</th>
+                                        <th class="pb-2">الكمية</th>
+                                        <th class="pb-2">الكلفة/وحدة</th>
+                                        <th class="pb-2">الإجمالي</th>
+                                        <th class="pb-2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ingredients-list">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                            <button onclick="addIngredientRow()" class="mt-3 text-xs text-green-400 hover:text-green-300"><i class="fas fa-plus"></i> إضافة مكون</button>
+                        </div>
+                        
+                        <div class="flex items-center space-x-3 space-x-reverse bg-gray-800/30 p-3 rounded">
+                            <label class="text-sm text-gray-400">نسبة الهالك (Wastage Buffer):</label>
+                            <input type="number" id="wastage-pct" value="3" class="w-16 input-sigma p-1 rounded text-center" oninput="calculateRecipe()">
+                            <span class="text-gray-500">%</span>
+                        </div>
+                    </div>
+
+                    <!-- Results Panel -->
+                    <div class="md:col-span-1">
+                        <div id="cost-card" class="bg-gray-800 p-6 rounded-xl border border-gray-700 h-full flex flex-col justify-center items-center text-center relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-2 opacity-10"><i class="fas fa-chart-pie text-9xl"></i></div>
+                            
+                            <h3 class="text-gray-400 mb-2">التكلفة الكلية (Cost)</h3>
+                            <div id="total-cost-display" class="text-3xl font-bold text-white mb-6">0.00 <span class="text-sm text-gray-500">د.أ</span></div>
+                            
+                            <h3 class="text-gray-400 mb-2">نسبة التكلفة (Food Cost %)</h3>
+                            <div id="cost-percent-display" class="text-4xl font-black mb-2">0%</div>
+                            <div id="cost-status-msg" class="text-xs px-2 py-1 rounded bg-gray-700">Waiting data...</div>
+
+                            <div class="w-full mt-8 border-t border-gray-700 pt-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-400">الربح المبدئي:</span>
+                                    <span id="gross-margin-display" class="font-bold text-green-400">0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PLATFORM ANALYSIS -->
+        <section id="platforms" class="hidden space-y-6">
+            <div class="glass-panel p-6 rounded-xl">
+                <h2 class="text-xl font-bold text-purple-400 mb-6"><i class="fas fa-chart-network ml-2"></i> تحليل ربحية المنصات (Aggregator Analysis)</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <!-- Dine In -->
+                    <div class="bg-gray-800 p-4 rounded-lg border-t-4 border-green-500">
+                        <h3 class="font-bold mb-2">داخل المطعم / استلام</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span>سعر البيع:</span> <input type="number" id="p-dine-price" value="5.00" class="w-16 bg-gray-700 rounded px-1" oninput="calcPlatforms()"></div>
+                            <div class="flex justify-between"><span>تكلفة الطعام:</span> <span class="p-food-cost text-red-400">-2.17</span></div>
+                            <div class="flex justify-between"><span>العمولة (0%):</span> <span class="text-gray-500">0.00</span></div>
+                            <div class="border-t border-gray-600 pt-2 flex justify-between font-bold text-lg">
+                                <span>الصافي:</span> <span id="p-dine-net" class="text-green-400">2.83</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Talabat -->
+                    <div class="bg-gray-800 p-4 rounded-lg border-t-4 border-orange-500">
+                        <h3 class="font-bold mb-2">طلبات (Talabat)</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span>سعر البيع:</span> <input type="number" id="p-talabat-price" value="5.00" class="w-16 bg-gray-700 rounded px-1" oninput="calcPlatforms()"></div>
+                            <div class="flex justify-between"><span>تكلفة الطعام:</span> <span class="p-food-cost text-red-400">-2.17</span></div>
+                            <div class="flex justify-between"><span>العمولة (22.7%):</span> <span id="p-talabat-comm" class="text-orange-400">-1.14</span></div>
+                            <div class="border-t border-gray-600 pt-2 flex justify-between font-bold text-lg">
+                                <span>الصافي:</span> <span id="p-talabat-net" class="text-yellow-400">1.69</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Careem -->
+                    <div class="bg-gray-800 p-4 rounded-lg border-t-4 border-red-600 relative overflow-hidden">
+                        <div class="absolute -right-8 top-4 bg-red-600 text-white text-xs px-8 py-1 rotate-45">High Cost</div>
+                        <h3 class="font-bold mb-2">كريم (Careem)</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span>سعر البيع:</span> <input type="number" id="p-careem-price" value="5.00" class="w-16 bg-gray-700 rounded px-1" oninput="calcPlatforms()"></div>
+                            <div class="flex justify-between"><span>تكلفة الطعام:</span> <span class="p-food-cost text-red-400">-2.17</span></div>
+                            <div class="flex justify-between"><span>العمولة (34.7%):</span> <span id="p-careem-comm" class="text-red-400">-1.73</span></div>
+                            <div class="border-t border-gray-600 pt-2 flex justify-between font-bold text-lg">
+                                <span>الصافي:</span> <span id="p-careem-net" class="text-red-500">1.10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-blue-900/20 rounded border border-blue-900/50">
+                    <h4 class="font-bold text-blue-300 mb-2"><i class="fas fa-lightbulb"></i> نصيحة المهندس سيغما:</h4>
+                    <p class="text-sm text-gray-300">
+                        لاحظ الفرق! تبيع نفس الساندويش، لكن في "كريم" يتبقى لك 1.10 دينار فقط لتغطية الرواتب والإيجار.
+                        <br>
+                        <strong>الحل المقترح:</strong> ارفع سعر البيع في كريم إلى <span id="suggested-price" class="font-bold text-white underline">5.75</span> دينار للحفاظ على نفس ربحية طلبات.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. P&L REPORT GENERATOR -->
+        <section id="pnl" class="hidden space-y-6">
+            <div class="glass-panel p-6 rounded-xl">
+                <h2 class="text-xl font-bold text-green-400 mb-6"><i class="fas fa-table ml-2"></i> حساب تكلفة البضاعة المباعة (الفعلي)</h2>
+                <p class="text-gray-400 text-sm mb-6">استخدم هذا النموذج في نهاية كل شهر بدلاً من الاعتماد على فواتير الشراء فقط.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-1">إجمالي المبيعات (Sales)</label>
+                            <input type="number" id="pnl-sales" value="67382" class="w-full input-sigma p-3 rounded text-lg font-bold" oninput="calcPnL()">
+                        </div>
+                        <div class="border-t border-gray-700 pt-4">
+                            <label class="block text-sm text-blue-300 mb-1">1. مخزون بداية المدة (Opening Stock)</label>
+                            <input type="number" id="pnl-opening" placeholder="0.00" class="w-full input-sigma p-2 rounded" oninput="calcPnL()">
+                            <p class="text-xs text-gray-500 mt-1">قيمة البضاعة في المخازن صباح يوم 1 في الشهر</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm text-blue-300 mb-1">2. المشتريات (Purchases)</label>
+                            <input type="number" id="pnl-purchases" value="29359" class="w-full input-sigma p-2 rounded" oninput="calcPnL()">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-blue-300 mb-1">3. مخزون نهاية المدة (Closing Stock)</label>
+                            <input type="number" id="pnl-closing" placeholder="أدخل قيمة الجرد هنا" class="w-full input-sigma p-2 rounded border-yellow-500" oninput="calcPnL()">
+                            <p class="text-xs text-yellow-500 mt-1">يجب القيام بالجرد الفعلي للحصول على رقم دقيق</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-black/40 p-6 rounded-xl border border-gray-700 flex flex-col justify-center">
+                        <h3 class="text-center text-gray-400 mb-4">النتائج المالية</h3>
+                        
+                        <div class="flex justify-between items-center mb-2">
+                            <span>تكلفة البضاعة المستهلكة (COGS):</span>
+                            <span id="res-cogs" class="text-xl font-bold text-red-400">0.00</span>
+                        </div>
+                        <div class="w-full bg-gray-700 h-2 rounded-full mb-6 overflow-hidden">
+                            <div id="bar-cogs" class="bg-red-500 h-full" style="width: 0%"></div>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-2">
+                            <span>مجمل الربح (Gross Profit):</span>
+                            <span id="res-profit" class="text-xl font-bold text-green-400">0.00</span>
+                        </div>
+                        
+                        <div class="mt-8 text-center">
+                            <span class="block text-sm text-gray-500">نسبة تكلفة الطعام (Food Cost %)</span>
+                            <span id="res-percent" class="text-5xl font-black text-white">0%</span>
+                        </div>
+                        <div id="pnl-alert" class="mt-4 text-center text-sm px-3 py-1 rounded hidden">
+                            <!-- Alert Text -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-12 text-center text-gray-600 text-xs border-t border-gray-800 pt-4">
+        <p>Architected by Sigma 4 | 2025</p>
+        <p>ملاحظة: هذا النظام للمحاكاة والتخطيط. البيانات المالية الرسمية تتطلب تدقيق محاسبي.</p>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // --- Navigation ---
+        function switchTab(tabId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            // Show selected
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
+        // --- 1. Dashboard Chart ---
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['برغر لحم', 'برغر دجاج', 'أخرى'],
+                datasets: [{
+                    data: [69, 14, 17],
+                    backgroundColor: ['#ef4444', '#f59e0b', '#3b82f6'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#94a3b8' } }
+                }
+            }
+        });
+
+        // --- 2. Recipe Costing Logic ---
+        let ingredients = [
+            { name: "لحم (عجل/واغيو)", unit: "kg", qty: 0.150, cost: 9.00 },
+            { name: "خبز (Potato Bun)", unit: "piece", qty: 1, cost: 0.20 },
+            { name: "جبنة (Cheddar)", unit: "slice", qty: 2, cost: 0.12 },
+            { name: "صوص خاص", unit: "kg", qty: 0.030, cost: 3.50 },
+            { name: "تغليف كامل", unit: "set", qty: 1, cost: 0.18 }
+        ];
+
+        function renderIngredients() {
+            const tbody = document.getElementById('ingredients-list');
+            tbody.innerHTML = '';
+            ingredients.forEach((ing, index) => {
+                const total = ing.qty * ing.cost;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><input type="text" value="${ing.name}" class="bg-transparent w-full focus:outline-none" onchange="updateIng(${index}, 'name', this.value)"></td>
+                        <td><input type="number" value="${ing.qty}" step="0.001" class="bg-gray-700 w-16 rounded px-1 text-center" onchange="updateIng(${index}, 'qty', this.value)"></td>
+                        <td><input type="number" value="${ing.cost}" step="0.01" class="bg-gray-700 w-16 rounded px-1 text-center" onchange="updateIng(${index}, 'cost', this.value)"></td>
+                        <td class="text-left font-mono">${total.toFixed(3)}</td>
+                        <td><button onclick="removeIng(${index})" class="text-red-500 hover:text-red-400"><i class="fas fa-times"></i></button></td>
+                    </tr>
+                `;
+            });
+            calculateRecipe();
+        }
+
+        function updateIng(index, field, value) {
+            ingredients[index][field] = field === 'name' ? value : parseFloat(value);
+            renderIngredients();
+        }
+
+        function removeIng(index) {
+            ingredients.splice(index, 1);
+            renderIngredients();
+        }
+
+        function addIngredientRow() {
+            ingredients.push({ name: "مكون جديد", unit: "unit", qty: 1, cost: 0.00 });
+            renderIngredients();
+        }
+
+        function resetRecipe() {
+            // Restore defaults
+            ingredients = [
+                { name: "لحم (عجل/واغيو)", unit: "kg", qty: 0.150, cost: 9.00 },
+                { name: "خبز (Potato Bun)", unit: "piece", qty: 1, cost: 0.20 },
+                { name: "جبنة (Cheddar)", unit: "slice", qty: 2, cost: 0.12 },
+                { name: "صوص خاص", unit: "kg", qty: 0.030, cost: 3.50 },
+                { name: "تغليف كامل", unit: "set", qty: 1, cost: 0.18 }
+            ];
+            renderIngredients();
+        }
+
+        function calculateRecipe() {
+            const price = parseFloat(document.getElementById('recipe-price').value) || 0;
+            const wastePct = parseFloat(document.getElementById('wastage-pct').value) || 0;
+            
+            let rawCost = ingredients.reduce((sum, ing) => sum + (ing.qty * ing.cost), 0);
+            let wasteAmount = rawCost * (wastePct / 100);
+            let totalCost = rawCost + wasteAmount;
+            
+            let costPct = price > 0 ? (totalCost / price) * 100 : 0;
+            let grossMargin = price - totalCost;
+
+            // Update DOM
+            document.getElementById('total-cost-display').innerHTML = `${totalCost.toFixed(3)} <span class="text-sm text-gray-500">د.أ</span>`;
+            document.getElementById('cost-percent-display').innerText = costPct.toFixed(1) + '%';
+            document.getElementById('gross-margin-display').innerText = grossMargin.toFixed(3);
+
+            // Styling Logic (Sigma Rules)
+            const statusEl = document.getElementById('cost-status-msg');
+            const card = document.getElementById('cost-card');
+            
+            if (costPct <= 30) {
+                statusEl.innerText = "EXCELLENT PERFORMANCE ✅";
+                statusEl.className = "text-xs px-2 py-1 rounded bg-green-900 text-green-300";
+                card.className = "bg-gray-800 p-6 rounded-xl border border-green-500/50 h-full flex flex-col justify-center items-center text-center relative overflow-hidden success-glow";
+            } else if (costPct <= 35) {
+                statusEl.innerText = "ACCEPTABLE RANGE ⚠️";
+                statusEl.className = "text-xs px-2 py-1 rounded bg-yellow-900 text-yellow-300";
+                card.className = "bg-gray-800 p-6 rounded-xl border border-yellow-500/50 h-full flex flex-col justify-center items-center text-center relative overflow-hidden";
+            } else {
+                statusEl.innerText = "CRITICAL: COST TOO HIGH 🚨";
+                statusEl.className = "text-xs px-2 py-1 rounded bg-red-900 text-red-300 font-bold animate-pulse";
+                card.className = "bg-gray-800 p-6 rounded-xl border border-red-500 h-full flex flex-col justify-center items-center text-center relative overflow-hidden danger-glow";
+            }
+
+            // Sync with Platform tab
+            updatePlatformFoodCost(totalCost);
+        }
+
+        // --- 3. Platform Logic ---
+        let currentFoodCost = 0;
+
+        function updatePlatformFoodCost(cost) {
+            currentFoodCost = cost;
+            document.querySelectorAll('.p-food-cost').forEach(el => el.innerText = '-' + cost.toFixed(2));
+            calcPlatforms();
+        }
+
+        function calcPlatforms() {
+            const dinePrice = parseFloat(document.getElementById('p-dine-price').value);
+            const talabatPrice = parseFloat(document.getElementById('p-talabat-price').value);
+            const careemPrice = parseFloat(document.getElementById('p-careem-price').value);
+
+            const dineNet = dinePrice - currentFoodCost;
+            
+            const talabatComm = talabatPrice * 0.2271;
+            const talabatNet = talabatPrice - currentFoodCost - talabatComm;
+            
+            const careemComm = careemPrice * 0.3465;
+            const careemNet = careemPrice - currentFoodCost - careemComm;
+
+            document.getElementById('p-dine-net').innerText = dineNet.toFixed(2);
+            
+            document.getElementById('p-talabat-comm').innerText = '-' + talabatComm.toFixed(2);
+            document.getElementById('p-talabat-net').innerText = talabatNet.toFixed(2);
+            
+            document.getElementById('p-careem-comm').innerText = '-' + careemComm.toFixed(2);
+            document.getElementById('p-careem-net').innerText = careemNet.toFixed(2);
+
+            // Suggestion Logic: Calculate price needed on Careem to match Talabat net
+            // Target Net = Talabat Net
+            // Price - Cost - (Price * 0.3465) = Talabat Net
+            // Price * (1 - 0.3465) = Talabat Net + Cost
+            // Price = (Talabat Net + Cost) / 0.6535
+            const suggestedCareemPrice = (talabatNet + currentFoodCost) / (1 - 0.3465);
+            document.getElementById('suggested-price').innerText = suggestedCareemPrice.toFixed(2);
+        }
+
+        // --- 4. P&L Logic ---
+        function calcPnL() {
+            const sales = parseFloat(document.getElementById('pnl-sales').value) || 0;
+            const opening = parseFloat(document.getElementById('pnl-opening').value) || 0;
+            const purchases = parseFloat(document.getElementById('pnl-purchases').value) || 0;
+            const closing = parseFloat(document.getElementById('pnl-closing').value) || 0;
+
+            const cogs = opening + purchases - closing;
+            const grossProfit = sales - cogs;
+            const cogsPercent = sales > 0 ? (cogs / sales) * 100 : 0;
+
+            document.getElementById('res-cogs').innerText = cogs.toLocaleString();
+            document.getElementById('res-profit').innerText = grossProfit.toLocaleString();
+            document.getElementById('res-percent').innerText = cogsPercent.toFixed(1) + '%';
+            
+            document.getElementById('bar-cogs').style.width = Math.min(cogsPercent, 100) + '%';
+
+            const alertBox = document.getElementById('pnl-alert');
+            if (cogsPercent > 40) {
+                alertBox.classList.remove('hidden');
+                alertBox.className = "mt-4 text-center text-sm px-3 py-1 rounded bg-red-900 text-red-200 border border-red-500";
+                alertBox.innerHTML = "<i class='fas fa-radiation'></i> تحذير: نسبة التكلفة كارثية. يجب مراجعة الهدر والسرقات فوراً.";
+            } else if (cogsPercent < 25 && cogsPercent > 0) {
+                 alertBox.classList.remove('hidden');
+                 alertBox.className = "mt-4 text-center text-sm px-3 py-1 rounded bg-yellow-900 text-yellow-200";
+                 alertBox.innerHTML = "تنبيه: النسبة منخفضة جداً بشكل مشكوك فيه. هل نسيت تسجيل فواتير؟";
+            } else {
+                alertBox.classList.add('hidden');
+            }
+        }
+
+        // Initialize
+        renderIngredients();
+        calcPnL();
+
+    </script>
+</body>
+</html>
